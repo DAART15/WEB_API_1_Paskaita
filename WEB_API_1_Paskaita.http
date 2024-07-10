@@ -1,0 +1,6 @@
+@WEB_API_1_Paskaita_HostAddress = http://localhost:5164
+
+GET {{WEB_API_1_Paskaita_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
