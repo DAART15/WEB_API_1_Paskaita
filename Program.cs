@@ -1,5 +1,5 @@
-
-using WEB_API_1_Paskaita.Controllers.Data;
+using WEB_API_1_Paskaita.Controllers.Data.Dto;
+using WEB_API_1_Paskaita.Interfaces;
 using WEB_API_1_Paskaita.Services;
 
 namespace WEB_API_1_Paskaita
@@ -25,6 +25,8 @@ namespace WEB_API_1_Paskaita
 
             builder.Services.AddSingleton<IFoodStoreService, FoodStoreService>();
             builder.Services.AddScoped<IFoodExpiryService, FoodExpiryService>();
+            builder.Services.AddSingleton<IContactDataService, ContactDataService>();
+            builder.Services.AddScoped<IContactUpdateService, ContactUpdateService>();
 
 
 

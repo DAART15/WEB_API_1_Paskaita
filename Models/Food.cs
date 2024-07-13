@@ -1,5 +1,4 @@
-﻿
-namespace WEB_API_1_Paskaita.Controllers.Models
+﻿namespace WEB_API_1_Paskaita.Models
 {
     public class Food
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WEB_API_1_Paskaita.Controllers.Data;
-using WEB_API_1_Paskaita.Controllers.Models;
+using WEB_API_1_Paskaita.Controllers.Data.Dto;
+using WEB_API_1_Paskaita.Models;
 using WEB_API_1_Paskaita.Services;
 
 namespace WEB_API_1_Paskaita.Controllers

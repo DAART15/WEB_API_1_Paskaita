@@ -1,6 +1,6 @@
-﻿using WEB_API_1_Paskaita.Controllers.Models;
+﻿using WEB_API_1_Paskaita.Models;
 
-namespace WEB_API_1_Paskaita.Controllers.Data
+namespace WEB_API_1_Paskaita.Controllers.Data.Dto
 {
     public static class FoodStore
     {
@@ -24,7 +24,7 @@ namespace WEB_API_1_Paskaita.Controllers.Data
 
         private Guid _serviceInstanceId;
         public Guid ServiceInstanceId { get { return _serviceInstanceId; } }
-        
+
         public List<Food> FoodList { get; set; } = new List<Food>()
         {
             new Food(1, "Orange", "Spain", 7.5),
