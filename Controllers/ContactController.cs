@@ -41,6 +41,27 @@ namespace WEB_API_1_Paskaita.Controllers
             contactToUpdate.Mail = contact.Mail;
             contactToUpdate.Note = contact.Note;
         }
-
+        [HttpPost]
+        public Contact CreateContact(Contact contact)
+        {
+            if (contact == null)
+            {
+                return null;
+            }
+            if (contact.Id > 0)
+            {
+                return null;
+            }
+            int getLastContactId = _contactDataService.ContactList.Max(c => c.Id);
+            contact.Id = getLastContactId+1;
+            _contactDataService.ContactList.Add(contact);
+            return contact;
+        }
+        [HttpDelete("{id:int}", Name = "DeleteContact")]
+        public void DeleteContact(int id)
+        {
+            var contactToDelete = _contactDataService.ContactList.FirstOrDefault(c => c.Id == id);
+            _contactDataService.ContactList.Remove(contactToDelete);
+        }
     }
 }
