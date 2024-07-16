@@ -26,7 +26,9 @@ namespace WEB_API_1_Paskaita
             builder.Services.AddSingleton<IFoodStoreService, FoodStoreService>();
             builder.Services.AddScoped<IFoodExpiryService, FoodExpiryService>();
             builder.Services.AddSingleton<IContactDataService, ContactDataService>();
-            builder.Services.AddScoped<IContactUpdateService, ContactUpdateService>();
+            builder.Services.AddTransient<IContactUpdateService, ContactUpdateService>();
+            builder.Services.AddSingleton<ISafetyCarDataService, SafetyCarDataService>();
+            builder.Services.AddTransient<ISafetyCarService, SafetyCarService>();
 
 
 
