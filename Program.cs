@@ -1,6 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using WEB_API_1_Paskaita.Controllers.Data.Dto;
+using WEB_API_1_Paskaita.DataBase;
 using WEB_API_1_Paskaita.Interfaces;
 using WEB_API_1_Paskaita.Services;
+using WEB_API_1_Paskaita.Services.Repositories;
 
 namespace WEB_API_1_Paskaita
 {
@@ -19,6 +22,13 @@ namespace WEB_API_1_Paskaita
                 .AllowAnyHeader();
             }));
             builder.Services.AddControllers();
+
+            builder.Services.AddDbContext<AplicationDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConection"));
+            });
+            
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -27,9 +37,9 @@ namespace WEB_API_1_Paskaita
             builder.Services.AddScoped<IFoodExpiryService, FoodExpiryService>();
             builder.Services.AddSingleton<IContactDataService, ContactDataService>();
             builder.Services.AddTransient<IContactUpdateService, ContactUpdateService>();
-            builder.Services.AddSingleton<ISafetyCarDataService, SafetyCarDataService>();
-            builder.Services.AddTransient<ISafetyCarService, SafetyCarService>();
-
+            builder.Services.AddScoped<ISafetyCarService, SafetyCarService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<ISafetyCarRepository, SafetyCarRepository>();
 
 
             var app = builder.Build();

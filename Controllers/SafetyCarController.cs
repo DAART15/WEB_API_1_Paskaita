@@ -15,29 +15,29 @@ namespace WEB_API_1_Paskaita.Controllers
             _safetyCarService = safetyCarService;
         }
         [HttpGet("all")]
-        public IEnumerable<SafetyCar> GetAllSafetyCars()
+        public async Task<IEnumerable<SafetyCar>> GetAllSafetyCarsAsync()
         {
-            return _safetyCarService.GetAllSafetyCars();
+            return await _safetyCarService.GetAllSafetyCarsAsync();
         }
         [HttpGet]
-        public IEnumerable<SafetyCar> GetSafetyCarByColor([FromQuery]string color)
+        public async Task<IEnumerable<SafetyCar>> GetSafetyCarByColorAsync([FromQuery]string color)
         {
-            return _safetyCarService.GetSafetyCarByColor(color);
+            return await _safetyCarService.GetSafetyCarByColorAsync(color);
         }
         [HttpPost]
-        public SafetyCar CreateSafetyCar(SafetyCar safetyCar)
+        public async Task<SafetyCar> CreateSafetyCarAsync(SafetyCar safetyCar)
         {
-            return _safetyCarService.CreateSafetyCar(safetyCar);
+            return await _safetyCarService.CreateSafetyCarAsync(safetyCar);
         }
         [HttpPut]
-        public void UpdateSafetyCar([FromQuery] int id, [FromBody] SafetyCar safetyCar)
+        public async Task UpdateSafetyCarAsync([FromQuery] int id, [FromBody] SafetyCar safetyCar)
         {
-            _safetyCarService.UpdateSafetyCar(id, safetyCar);
+            await _safetyCarService.UpdateSafetyCarAsync(id, safetyCar);
         }
         [HttpDelete("{id:int}", Name ="DeleteSafetyCar")]
-        public void DeleteSafetyCar(int id)
+        public async Task DeleteSafetyCarAsync(int id)
         {
-            _safetyCarService.DeleteSafetyCar(id);
+            await _safetyCarService.DeleteSafetyCarAsync(id);
         }
     }
 }

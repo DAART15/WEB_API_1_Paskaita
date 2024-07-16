@@ -5,26 +5,27 @@ namespace WEB_API_1_Paskaita.Services
 {
     public class SafetyCarService : ISafetyCarService
     {
-        private readonly ISafetyCarDataService _safetyCarDataService;
+        private readonly ISafetyCarRepository _safetyCarRepository;
 
-        public SafetyCarService(ISafetyCarDataService safetyCarDataService)
+        public SafetyCarService(ISafetyCarRepository safetyCarRepository)
         {
-            _safetyCarDataService = safetyCarDataService;
+            _safetyCarRepository = safetyCarRepository;
         }
-        public IEnumerable<SafetyCar> GetAllSafetyCars()
+        public async Task<IEnumerable<SafetyCar>> GetAllSafetyCarsAsync()
         {
-            return _safetyCarDataService.SafetyCarList;
+            return await _safetyCarRepository.GetSafetyCarsAsinc();
         }
 
-        public IEnumerable<SafetyCar> GetSafetyCarByColor( string color)
+        public async Task<IEnumerable<SafetyCar>> GetSafetyCarByColorAsync( string color)
         {
             if (string.IsNullOrEmpty(color) || string.IsNullOrWhiteSpace(color))
             {
                 return null;
             }
-            return _safetyCarDataService.SafetyCarList.Where(c => c.Color.ToLower() == color.ToLower());
+            var allsafetyCars = await GetAllSafetyCarsAsync();
+            return allsafetyCars.Where(c => c.Color.ToLower() == color.ToLower());
         }
-        public SafetyCar CreateSafetyCar(SafetyCar safetyCar)
+        public async Task<SafetyCar> CreateSafetyCarAsync(SafetyCar safetyCar)
         {
             if(safetyCar.Id == null)
             {
@@ -34,22 +35,26 @@ namespace WEB_API_1_Paskaita.Services
             {
                 return null;
             }
-            int lastSafetyCarId = _safetyCarDataService.SafetyCarList.Max(c => c.Id);
+            var allsafetyCars = await GetAllSafetyCarsAsync();
+            int lastSafetyCarId = allsafetyCars.Max(c => c.Id);
             safetyCar.Id = lastSafetyCarId+1;
-            _safetyCarDataService.SafetyCarList.Add(safetyCar);
+            await _safetyCarRepository.AddSafetyCarAsync(safetyCar);
             return safetyCar;
         }
-        public void UpdateSafetyCar(int id, SafetyCar safetyCar)
+        public async Task UpdateSafetyCarAsync(int id, SafetyCar safetyCar)
         {
-            var safetyCarToUpdate = _safetyCarDataService.SafetyCarList.FirstOrDefault(c =>c.Id == id);
+            var allsafetyCars = await GetAllSafetyCarsAsync();
+            var safetyCarToUpdate = allsafetyCars.FirstOrDefault(c =>c.Id == id);
             safetyCarToUpdate.Brand = safetyCar.Brand;
             safetyCarToUpdate.Model = safetyCar.Model;
             safetyCarToUpdate.Color = safetyCar.Color;
+            await _safetyCarRepository.UpdateSafetyCarAsync(safetyCarToUpdate);
         }
-        public void DeleteSafetyCar(int id)
+        public async Task DeleteSafetyCarAsync(int id)
         {
-            var safetyCarToDelete =  _safetyCarDataService.SafetyCarList.FirstOrDefault(c =>c.Id == id);
-            _safetyCarDataService.SafetyCarList.Remove(safetyCarToDelete);
+            var allsafetyCars = await GetAllSafetyCarsAsync();
+            var safetyCarToDelete = allsafetyCars.FirstOrDefault(c =>c.Id == id);
+            await _safetyCarRepository.DeleteSafetyCarAsync(safetyCarToDelete);
         }
     }
 }
