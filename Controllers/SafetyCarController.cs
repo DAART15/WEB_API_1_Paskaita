@@ -8,11 +8,13 @@ namespace WEB_API_1_Paskaita.Controllers
     [ApiController]
     public class SafetyCarController : ControllerBase
     {
-        public readonly ISafetyCarService _safetyCarService;
+        private readonly ISafetyCarService _safetyCarService;
+        private readonly ILogger _logger;
 
-        public SafetyCarController(ISafetyCarService safetyCarService)
+        public SafetyCarController(ISafetyCarService safetyCarService, ILogger<SafetyCarController> logger)
         {
             _safetyCarService = safetyCarService;
+            _logger = logger;
         }
         [HttpGet("all")]
         public async Task<IEnumerable<SafetyCar>> GetAllSafetyCarsAsync()
@@ -27,7 +29,9 @@ namespace WEB_API_1_Paskaita.Controllers
         [HttpPost]
         public async Task<SafetyCar> CreateSafetyCarAsync(SafetyCar safetyCar)
         {
-            return await _safetyCarService.CreateSafetyCarAsync(safetyCar);
+            var car = await _safetyCarService.CreateSafetyCarAsync(safetyCar);
+            _logger.LogInformation(car.ToString());
+            return car;
         }
         [HttpPut]
         public async Task UpdateSafetyCarAsync([FromQuery] int id, [FromBody] SafetyCar safetyCar)
