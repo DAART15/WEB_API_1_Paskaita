@@ -8,22 +8,34 @@ namespace WEB_API_1_Paskaita.Controllers
 {
     [Route("api/contact")]
     [ApiController]
-    public class ContactController : ControllerBase
+    public class ContactController(IContactRepositoryService _contactRepositoryService, IContactMaper _contactMaper) : ControllerBase
     {
-        private readonly IContactDataService _contactDataService;
-        private readonly IContactUpdateService _contactUpdateService;
-
-        public ContactController(IContactDataService contactDataService, IContactUpdateService contactUpdateService)
-        {
-            _contactDataService = contactDataService;
-            _contactUpdateService = contactUpdateService;
-        }
         [HttpGet("all")]
-        public IEnumerable<Contact> GetAllContacts()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Contact>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<Contact>>> GetAllContacts()
         {
-            return _contactDataService.ContactList;
+            var contacts = await _contactRepositoryService.GetALLContactsAsync();
+            if (contacts == null)
+            {
+                return NotFound();
+            }
+            var contactsWithoutDate = contacts.Select(_contactMaper.DateLess).ToList();
+            return Ok(contactsWithoutDate);
         }
-        [HttpGet("{id:int}", Name ="GetContact")]
+
+
+
+
+
+
+
+
+
+
+
+        /*[HttpGet("{id:int}", Name ="GetContact")]
         public Contact GetContactById(int id)
         {
             var contact = _contactDataService.ContactList.FirstOrDefault(c=>c.Id == id);
@@ -62,6 +74,7 @@ namespace WEB_API_1_Paskaita.Controllers
         {
             var contactToDelete = _contactDataService.ContactList.FirstOrDefault(c => c.Id == id);
             _contactDataService.ContactList.Remove(contactToDelete);
-        }
+        }*/
+
     }
 }

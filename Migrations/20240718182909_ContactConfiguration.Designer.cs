@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WEB_API_1_Paskaita.DataBase;
 
@@ -11,9 +12,11 @@ using WEB_API_1_Paskaita.DataBase;
 namespace WEB_API_1_Paskaita.Migrations
 {
     [DbContext(typeof(AplicationDbContext))]
-    partial class FoodDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240718182909_ContactConfiguration")]
+    partial class ContactConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,68 +65,6 @@ namespace WEB_API_1_Paskaita.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Contacts", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Company = "DAART15",
-                            CreatedAt = new DateTime(2024, 7, 18, 21, 42, 8, 973, DateTimeKind.Local).AddTicks(8547),
-                            FirstName = "Ramas",
-                            LastName = "Darr",
-                            Mail = "ramas@daart15.com",
-                            Note = "mano kontaktas",
-                            PhoneNumber = "+37023456789",
-                            UpdatedAt = new DateTime(2024, 7, 18, 21, 42, 8, 973, DateTimeKind.Local).AddTicks(8586)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Company = "UAB Tadilis",
-                            CreatedAt = new DateTime(2024, 7, 18, 21, 42, 8, 973, DateTimeKind.Local).AddTicks(8588),
-                            FirstName = "Tadas",
-                            LastName = "Tadulis",
-                            Mail = "tadas@tadulis.com",
-                            Note = "",
-                            PhoneNumber = "+370234",
-                            UpdatedAt = new DateTime(2024, 7, 18, 21, 42, 8, 973, DateTimeKind.Local).AddTicks(8589)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Company = "DAART15",
-                            CreatedAt = new DateTime(2024, 7, 18, 21, 42, 8, 973, DateTimeKind.Local).AddTicks(8590),
-                            FirstName = "Andius",
-                            LastName = "Daar",
-                            Mail = "andriusl@daart15.com",
-                            Note = "vyr. kontaktas",
-                            PhoneNumber = "+37023456799",
-                            UpdatedAt = new DateTime(2024, 7, 18, 21, 42, 8, 973, DateTimeKind.Local).AddTicks(8591)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Company = "DAART15",
-                            CreatedAt = new DateTime(2024, 7, 18, 21, 42, 8, 973, DateTimeKind.Local).AddTicks(8592),
-                            FirstName = "Arma",
-                            LastName = "Daar",
-                            Mail = "arma@daart15.com",
-                            Note = "junior kontaktas",
-                            PhoneNumber = "+37023456788",
-                            UpdatedAt = new DateTime(2024, 7, 18, 21, 42, 8, 973, DateTimeKind.Local).AddTicks(8593)
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Company = "DAART15",
-                            CreatedAt = new DateTime(2024, 7, 18, 21, 42, 8, 973, DateTimeKind.Local).AddTicks(8594),
-                            FirstName = "Daiva",
-                            LastName = "Darr",
-                            Mail = "daiva@daart15.com",
-                            Note = "paciausias kontaktas",
-                            PhoneNumber = "+3702345639",
-                            UpdatedAt = new DateTime(2024, 7, 18, 21, 42, 8, 973, DateTimeKind.Local).AddTicks(8595)
-                        });
                 });
 
             modelBuilder.Entity("WEB_API_1_Paskaita.Models.SafetyCar", b =>
@@ -213,17 +154,17 @@ namespace WEB_API_1_Paskaita.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4b7d9e58-3af0-4de0-8a80-0139135f14f6"),
+                            Id = new Guid("3f865fb7-a366-44ad-ab17-b8df12bf29a0"),
                             City = "New York",
-                            CreationDateTime = new DateTime(2024, 7, 18, 18, 42, 8, 973, DateTimeKind.Utc).AddTicks(7784),
+                            CreationDateTime = new DateTime(2024, 7, 18, 18, 29, 9, 78, DateTimeKind.Utc).AddTicks(2114),
                             Email = "johndoe@example.com",
                             UserName = "JohnDoe"
                         },
                         new
                         {
-                            Id = new Guid("c74d6a7f-ffec-467e-ba80-610d7d117869"),
+                            Id = new Guid("00ebb7a2-3dd1-4987-a473-1f2b34fad56e"),
                             City = "Los Angeles",
-                            CreationDateTime = new DateTime(2024, 7, 18, 18, 42, 8, 973, DateTimeKind.Utc).AddTicks(7801),
+                            CreationDateTime = new DateTime(2024, 7, 18, 18, 29, 9, 78, DateTimeKind.Utc).AddTicks(2134),
                             Email = "janedoe@example.com",
                             UserName = "JaneDoe"
                         });

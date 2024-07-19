@@ -12,60 +12,79 @@ namespace WEB_API_1_Paskaita.Controllers
     {
         private readonly IFoodStoreService _foodStoreService;
         private readonly IFoodExpiryService _foodExpiryService;
+        private readonly IFoodMaper _foodMaper;
 
-        public FoodControler( IFoodStoreService foodStoreservice, IFoodExpiryService foodExpiryService) 
+        public FoodControler( IFoodStoreService foodStoreservice, IFoodExpiryService foodExpiryService, IFoodMaper foodMaper) 
         {
             _foodStoreService = foodStoreservice;
             _foodExpiryService = foodExpiryService;
 
         }
         [HttpGet("all")]
-        public IEnumerable<Food> GetAllFood()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Food>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<IEnumerable<Food>> GetAllFood()
         {
             _foodExpiryService.AddExpirationDateTime(5);
-            return _foodStoreService.FoodList;
+            var response = _foodStoreService.FoodList
+                .Select(_foodMaper.Bind)
+                .ToList();
+            return Ok(_foodStoreService.FoodList);
 
         }
 
         [HttpGet("{id:int}", Name = "GetFood")]
-        public Food? GetById(int Id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Food))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<Food?> GetById(int Id)
         {
-            if(Id == 0)
+            if(Id <= 0)
             {
-                return null;
+                return BadRequest();
             }
             var foodProduct = _foodStoreService.FoodList.FirstOrDefault(fp => fp.Id == Id);
-
-            return foodProduct;
+            if(foodProduct == null)
+            {
+                return NotFound();
+            }
+            return Ok(foodProduct);
         }
 
         [HttpPost]
-        public Food CreateFood(Food food)
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Food))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Food> CreateFood(Food food)
         {
             if (food == null)
             {
-                return null;
+                return NotFound();
             }
             if (food.Id > 0)
             {
-                return null;
+                return BadRequest();
             }
             int getLastFoodId = _foodStoreService.FoodList.Max(fp => fp.Id);
 
             food.Id = getLastFoodId + 1;
             _foodStoreService.FoodList.Add(food);
 
-            return food;
+            return CreatedAtRoute("GetFood", new {id= food.Id }, food);
         }
 
         [HttpDelete("{id:int}", Name = "DeleteFood")]
-        public void DeleteFood(int id)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public IActionResult DeleteFood(int id)
         {
             var foodToDelete = _foodStoreService.FoodList.FirstOrDefault(f=>f.Id == id);
             _foodStoreService.FoodList.Remove(foodToDelete);
+            return NoContent();
         }
         
         [HttpPut("{id:int}", Name = "UpdateFood")]
+
         public void UpdateFood (int id,Food food)
         {
             var foodToUpdate = _foodStoreService.FoodList.FirstOrDefault(f=> f.Id == id);
@@ -74,6 +93,5 @@ namespace WEB_API_1_Paskaita.Controllers
             foodToUpdate.Weight = food.Weight;
 
         }
-
     }
 }

@@ -10,11 +10,13 @@ namespace WEB_API_1_Paskaita.DataBase
         public AplicationDbContext(DbContextOptions<AplicationDbContext> options) : base(options) { }
         public DbSet<User> Users { get; set; }
         public DbSet<SafetyCar> SafetyCars { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new SafetyCarConfiguration());
+            modelBuilder.ApplyConfiguration(new ContactConfiguration());
         }
     }
 }

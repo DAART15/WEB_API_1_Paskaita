@@ -1,4 +1,6 @@
-﻿namespace WEB_API_1_Paskaita.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WEB_API_1_Paskaita.Models
 {
     public class Contact
     {
@@ -18,10 +20,12 @@
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Company { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Mail { get; set; }
-        public string Note { get; set; }
+        public string? Company { get; set; }
+        [MinLength(5)]
+        [MaxLength(15)]
+        public string? PhoneNumber { get; set; }
+        public string? Mail { get; set; }
+        public string? Note { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
