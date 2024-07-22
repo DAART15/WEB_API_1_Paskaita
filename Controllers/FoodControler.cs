@@ -75,7 +75,7 @@ namespace WEB_API_1_Paskaita.Controllers
         }
 
         [HttpDelete("{id:int}", Name = "DeleteFood")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult DeleteFood(int id)
         {
             var foodToDelete = _foodStoreService.FoodList.FirstOrDefault(f=>f.Id == id);

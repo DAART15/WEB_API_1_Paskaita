@@ -11,5 +11,20 @@ namespace WEB_API_1_Paskaita.Services.Repositories
         {
             return await _dbContext.Contacts.ToListAsync();
         }
+        public async Task UpdateContactDBAsync(Contact contact)
+        {
+            _dbContext.Contacts.Update(contact);
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task CreateContactDBAsync(Contact contact)
+        {
+            _dbContext.Contacts.Add(contact);
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task DeleteContactDBAsync(Contact contact)
+        {
+            _dbContext.Contacts.Remove(contact);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
