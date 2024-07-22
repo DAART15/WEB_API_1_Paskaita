@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WEB_API_1_Paskaita.Controllers.Data;
+using WEB_API_1_Paskaita.Controllers.Data.Dto;
 using WEB_API_1_Paskaita.Interfaces;
 using WEB_API_1_Paskaita.Models;
 
@@ -11,10 +12,10 @@ namespace WEB_API_1_Paskaita.Controllers
     public class ContactController(IContactRepositoryService _contactRepositoryService, IContactMaper _contactMaper) : ControllerBase
     {
         [HttpGet("all")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Contact>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IList<GetContactDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<Contact>>> GetAllContacts()
+        public async Task<ActionResult<IList<GetContactDTO>>> GetAllContacts()
         {
             var contacts = await _contactRepositoryService.GetALLContactsAsync();
             if (contacts == null)
@@ -24,24 +25,27 @@ namespace WEB_API_1_Paskaita.Controllers
             var contactsWithoutDate = contacts.Select(_contactMaper.DateLess).ToList();
             return Ok(contactsWithoutDate);
         }
-
-
-
-
-
-
-
-
-
-
-
-        /*[HttpGet("{id:int}", Name ="GetContact")]
-        public Contact GetContactById(int id)
+        [HttpGet("{id:int}", Name ="GetContact")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Contact))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Contact>>GetContactById(int id)
         {
-            var contact = _contactDataService.ContactList.FirstOrDefault(c=>c.Id == id);
-            return contact;
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+            var contact = await _contactRepositoryService.GetContactById(id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(contact);
+            }
         }
-        [HttpPut("{id:int}", Name = "UpdateContact")]
+        /*[HttpPut("{id:int}", Name = "UpdateContact")]
         public void UpdateContact(int id, Contact contact)
         {
             _contactUpdateService.ChangeContactUpdateDateTime(id);

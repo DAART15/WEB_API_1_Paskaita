@@ -10,5 +10,18 @@ namespace WEB_API_1_Paskaita.Services
         {
             return await _contactRepository.GetContactsFromDBAsync();
         }
+        /*public async Task<bool> CheckContactId(int id)
+        {
+            var allContacts = await GetALLContactsAsync();
+            allContacts.Find(x => x.Id == id);
+            
+        }*/
+        public async Task<Contact>GetContactById(int id)
+        {
+            var allContacts = await GetALLContactsAsync();
+            var contactById = allContacts.FirstOrDefault(x => x.Id == id);
+            return contactById;
+        }
     }
+    
 }
