@@ -4,13 +4,12 @@ using WEB_API_1_Paskaita.Controllers.Data;
 using WEB_API_1_Paskaita.Controllers.Data.Dto;
 using WEB_API_1_Paskaita.Interfaces;
 using WEB_API_1_Paskaita.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WEB_API_1_Paskaita.Controllers
 {
     [Route("api/contact")]
     [ApiController]
-    public class ContactController(IContactRepositoryService _contactRepositoryService, IContactMaper _contactMaper, ILogger<ContactController> _logger) : ControllerBase
+    public class ContactController(IContactRepositoryService _contactRepositoryService, IContactMapper _contactMaper, ILogger<ContactController> _logger) : ControllerBase
     {
         [HttpGet("all")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IList<GetContactDTO>))]
@@ -30,7 +29,7 @@ namespace WEB_API_1_Paskaita.Controllers
             }
             catch (Exception ex)
             {
-                //_logger.LogCritical(ex, "An error occurred while get all contacts.");
+                _logger.LogCritical(ex, "An error occurred while get all contacts.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
             }
         }
@@ -76,6 +75,10 @@ namespace WEB_API_1_Paskaita.Controllers
                 {
                     return BadRequest();
                 }
+                if (contact == null)
+                {
+                    return NotFound();
+                }
                 var contactToUpdate = await _contactRepositoryService.GetContactByIdAsync(id);
                 if (contactToUpdate == null)
                 {
@@ -94,11 +97,11 @@ namespace WEB_API_1_Paskaita.Controllers
             }
         }
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Contact))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<Contact>>CreateContact([FromBody] Contact contact)
+        public async Task<IActionResult> CreateContact([FromBody] Contact contact)
         {
             try
             {

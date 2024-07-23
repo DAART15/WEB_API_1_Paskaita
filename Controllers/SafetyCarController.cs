@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WEB_API_1_Paskaita.Controllers.Data.Dto;
 using WEB_API_1_Paskaita.Interfaces;
 using WEB_API_1_Paskaita.Models;
 
@@ -17,31 +18,148 @@ namespace WEB_API_1_Paskaita.Controllers
             _logger = logger;
         }
         [HttpGet("all")]
-        public async Task<IEnumerable<SafetyCar>> GetAllSafetyCarsAsync()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<SafetyCar>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<SafetyCar>>> GetAllSafetyCarsAsync()
         {
-            return await _safetyCarService.GetAllSafetyCarsAsync();
+            try
+            {
+                var allSafetyCars = await _safetyCarService.GetAllSafetyCarsAsync();
+                if (allSafetyCars == null)
+                {
+                    return NotFound();
+                }
+                return Ok(allSafetyCars);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "An error occurred while get all safety cars.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
+            
         }
         [HttpGet]
-        public async Task<IEnumerable<SafetyCar>> GetSafetyCarByColorAsync([FromQuery]string color)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<SafetyCar>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<SafetyCar>>> GetSafetyCarByColorAsync([FromQuery]string color)
         {
-            return await _safetyCarService.GetSafetyCarByColorAsync(color);
+            try
+            {
+                if (color == null)
+                {
+                    return BadRequest();
+                }
+                var safetyCarByColor = await _safetyCarService.GetSafetyCarByColorAsync(color);
+                if (!safetyCarByColor.Any())
+                {
+                    return NotFound();
+                }
+                return Ok(safetyCarByColor);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "An error occurred while get safety car by color.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
         }
         [HttpPost]
-        public async Task<SafetyCar> CreateSafetyCarAsync(SafetyCar safetyCar)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateSafetyCarAsync(SafetyCar safetyCar)
         {
-            var car = await _safetyCarService.CreateSafetyCarAsync(safetyCar);
-            _logger.LogInformation(car.ToString());
-            return car;
+            try
+            {
+                if(safetyCar == null)
+                {
+                    return NotFound();
+                }
+                if(safetyCar.Id > 0)
+                {
+                    return BadRequest();
+                }
+                var car = await _safetyCarService.CreateSafetyCarAsync(safetyCar);
+                if (car== null)
+                {
+                    return NotFound();
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "An error occurred while create safety car.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
+
+            
         }
         [HttpPut]
-        public async Task UpdateSafetyCarAsync([FromQuery] int id, [FromBody] SafetyCar safetyCar)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateSafetyCarAsync([FromQuery] int id, [FromBody] SafetyCar safetyCar)
         {
-            await _safetyCarService.UpdateSafetyCarAsync(id, safetyCar);
+            try
+            {
+                if (id <= 0)
+                {
+                    return BadRequest();
+                }
+                if (safetyCar == null)
+                {
+                    return NotFound();
+                }
+                var safetyCarToUpdate = await _safetyCarService.GetSafetyCarByIDAsync(safetyCar.Id);
+                if (safetyCarToUpdate == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    await _safetyCarService.UpdateSafetyCarAsync(safetyCarToUpdate, safetyCar);
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "An error occurred while update safety car.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
         }
         [HttpDelete("{id:int}", Name ="DeleteSafetyCar")]
-        public async Task DeleteSafetyCarAsync(int id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteSafetyCarAsync(int id)
         {
-            await _safetyCarService.DeleteSafetyCarAsync(id);
+            try
+            {
+                if (id <= 0)
+                {
+                    return BadRequest();
+                }
+                var safetyCarToDelete = await _safetyCarService.GetSafetyCarByIDAsync(id);
+                if (safetyCarToDelete == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    await _safetyCarService.DeleteSafetyCarAsync(safetyCarToDelete);
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "An error occurred while delete safety car.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
         }
     }
 }

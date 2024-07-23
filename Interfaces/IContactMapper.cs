@@ -3,7 +3,7 @@ using WEB_API_1_Paskaita.Models;
 
 namespace WEB_API_1_Paskaita.Interfaces
 {
-    public interface IContactMaper
+    public interface IContactMapper
     {
         public GetContactDTO DateLess(Contact contact);
     }

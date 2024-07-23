@@ -45,7 +45,7 @@ namespace WEB_API_1_Paskaita
             builder.Services.AddScoped<IFoodMaper, FoodMaper>();
             builder.Services.AddScoped<IContactRepository, ContactRepository>();
             builder.Services.AddScoped<IContactRepositoryService, ContactRepositoryService>();
-            builder.Services.AddScoped<IContactMaper, ContactMaper>();
+            builder.Services.AddScoped<IContactMapper, ContactMapper>();
 
 
             var app = builder.Build();

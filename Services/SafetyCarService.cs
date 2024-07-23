@@ -41,20 +41,21 @@ namespace WEB_API_1_Paskaita.Services
             await _safetyCarRepository.AddSafetyCarAsync(safetyCar);
             return safetyCar;
         }
-        public async Task UpdateSafetyCarAsync(int id, SafetyCar safetyCar)
+        public async Task UpdateSafetyCarAsync(SafetyCar safetyCarToUpdate, SafetyCar safetyCar)
         {
-            var allsafetyCars = await GetAllSafetyCarsAsync();
-            var safetyCarToUpdate = allsafetyCars.FirstOrDefault(c =>c.Id == id);
             safetyCarToUpdate.Brand = safetyCar.Brand;
             safetyCarToUpdate.Model = safetyCar.Model;
             safetyCarToUpdate.Color = safetyCar.Color;
             await _safetyCarRepository.UpdateSafetyCarAsync(safetyCarToUpdate);
         }
-        public async Task DeleteSafetyCarAsync(int id)
+        public async Task DeleteSafetyCarAsync(SafetyCar safetyCarToDelete)
         {
-            var allsafetyCars = await GetAllSafetyCarsAsync();
-            var safetyCarToDelete = allsafetyCars.FirstOrDefault(c =>c.Id == id);
             await _safetyCarRepository.DeleteSafetyCarAsync(safetyCarToDelete);
+        }
+        public async Task<SafetyCar>GetSafetyCarByIDAsync(int id)
+        {
+            var allSafetyCars = await GetAllSafetyCarsAsync();
+            return allSafetyCars.FirstOrDefault(s => s.Id == id);
         }
     }
 }

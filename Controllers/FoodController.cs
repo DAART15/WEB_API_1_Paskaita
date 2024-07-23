@@ -8,17 +8,16 @@ namespace WEB_API_1_Paskaita.Controllers
 {
     [Route("api/food")]
     [ApiController]
-    public class FoodControler : ControllerBase
+    public class FoodController : ControllerBase
     {
         private readonly IFoodStoreService _foodStoreService;
         private readonly IFoodExpiryService _foodExpiryService;
         private readonly IFoodMaper _foodMaper;
 
-        public FoodControler( IFoodStoreService foodStoreservice, IFoodExpiryService foodExpiryService, IFoodMaper foodMaper) 
+        public FoodController( IFoodStoreService foodStoreservice, IFoodExpiryService foodExpiryService, IFoodMaper foodMaper) 
         {
             _foodStoreService = foodStoreservice;
             _foodExpiryService = foodExpiryService;
-
         }
         [HttpGet("all")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Food>))]
@@ -91,7 +90,6 @@ namespace WEB_API_1_Paskaita.Controllers
             foodToUpdate.Name = food.Name;
             foodToUpdate.Country = food.Country;
             foodToUpdate.Weight = food.Weight;
-
         }
     }
 }
