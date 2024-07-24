@@ -23,7 +23,7 @@ namespace WEB_API_1_Paskaita.Controllers
             }
             else
             {
-                throw new ArgumentException("The Country has not been found");
+                throw new ArgumentException("The Holiday has not been found");
             }
         }
         [HttpGet]

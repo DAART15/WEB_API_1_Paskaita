@@ -25,21 +25,12 @@ namespace WEB_API_1_Paskaita.Services
             var allsafetyCars = await GetAllSafetyCarsAsync();
             return allsafetyCars.Where(c => c.Color.ToLower() == color.ToLower());
         }
-        public async Task<SafetyCar> CreateSafetyCarAsync(SafetyCar safetyCar)
+        public async Task CreateSafetyCarAsync(SafetyCar safetyCar)
         {
-            if(safetyCar.Id == null)
-            {
-                return null ;
-            }
-            if(safetyCar.Id > 0)
-            {
-                return null;
-            }
             var allsafetyCars = await GetAllSafetyCarsAsync();
             int lastSafetyCarId = allsafetyCars.Max(c => c.Id);
             safetyCar.Id = lastSafetyCarId+1;
             await _safetyCarRepository.AddSafetyCarAsync(safetyCar);
-            return safetyCar;
         }
         public async Task UpdateSafetyCarAsync(SafetyCar safetyCarToUpdate, SafetyCar safetyCar)
         {

@@ -26,7 +26,7 @@ namespace WEB_API_1_Paskaita.Controllers
             try
             {
                 var allSafetyCars = await _safetyCarService.GetAllSafetyCarsAsync();
-                if (allSafetyCars == null)
+                if (!allSafetyCars.Any())
                 {
                     return NotFound();
                 }
@@ -66,7 +66,7 @@ namespace WEB_API_1_Paskaita.Controllers
             }
         }
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -82,20 +82,14 @@ namespace WEB_API_1_Paskaita.Controllers
                 {
                     return BadRequest();
                 }
-                var car = await _safetyCarService.CreateSafetyCarAsync(safetyCar);
-                if (car== null)
-                {
-                    return NotFound();
-                }
-                return Ok();
+                await _safetyCarService.CreateSafetyCarAsync(safetyCar);
+                return Created();
             }
             catch (Exception ex)
             {
                 _logger.LogCritical(ex, "An error occurred while create safety car.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
             }
-
-            
         }
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
