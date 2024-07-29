@@ -11,6 +11,7 @@ namespace WEB_API_1_Paskaita.DataBase
         public DbSet<User> Users { get; set; }
         public DbSet<SafetyCar> SafetyCars { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

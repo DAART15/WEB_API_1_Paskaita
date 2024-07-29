@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WEB_API_1_Paskaita.Interfaces;
 using WEB_API_1_Paskaita.Models;
@@ -18,6 +19,7 @@ namespace WEB_API_1_Paskaita.Controllers
             _logger = logger;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<User>> GetUsers()
         {
             var users = await _userRepository.GetUsersAsync();
