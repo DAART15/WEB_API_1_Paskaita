@@ -1,4 +1,6 @@
-﻿using WEB_API_1_Paskaita.Models;
+﻿
+using Web_Api.Domain.Models;
+
 namespace WEB_API_1_Paskaita.Controllers.Data.Dto
 {
     public class GetFoodDTO(Food food)

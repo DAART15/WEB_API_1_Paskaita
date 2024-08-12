@@ -18,4 +18,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Web_api.Domain\Web_Api.Domain.csproj" />
+    <ProjectReference Include="..\Web_Api.Infrastructure\Web_Api.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

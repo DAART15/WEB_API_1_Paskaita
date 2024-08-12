@@ -1,7 +1,8 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using WEB_API_1_Paskaita.Models;
-using WEB_API_1_Paskaita.Services.Repositories;
+using Web_Api.Domain.Models;
+using Web_Api.Infrastructure.Services.Repositories;
+
 
 namespace WEB_API_1_Paskaita.Services
 {

@@ -1,8 +1,9 @@
-﻿using WEB_API_1_Paskaita.Models;
+﻿
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Metrics;
+using Web_Api.Domain.Models;
 
 namespace WEB_API_1_Paskaita.Controllers
 {

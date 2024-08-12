@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Web_Api.Domain.Models;
+using Web_Api.Infrastructure.Interfaces;
 using WEB_API_1_Paskaita.Interfaces;
-using WEB_API_1_Paskaita.Models;
+
 
 namespace WEB_API_1_Paskaita.Services
 {

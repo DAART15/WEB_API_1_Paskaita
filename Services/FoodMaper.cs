@@ -1,5 +1,6 @@
-﻿using WEB_API_1_Paskaita.Controllers.Data.Dto;
-using WEB_API_1_Paskaita.Models;
+﻿using Web_Api.Domain.Models;
+using WEB_API_1_Paskaita.Controllers.Data.Dto;
+
 
 namespace WEB_API_1_Paskaita.Services
 {

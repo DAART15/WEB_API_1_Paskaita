@@ -1,5 +1,8 @@
-﻿using WEB_API_1_Paskaita.Interfaces;
-using WEB_API_1_Paskaita.Models;
+﻿
+
+using Web_Api.Domain.Models;
+using WEB_API_1_Paskaita.Interfaces;
+
 namespace WEB_API_1_Paskaita.Services
 {
     public class ContactDataService : IContactDataService

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Web_Api.Domain.Models;
+using Web_Api.Domain.Services;
 using WEB_API_1_Paskaita.Controllers.Data.Dto;
-using WEB_API_1_Paskaita.Models;
+
 using WEB_API_1_Paskaita.Services;
 
 namespace WEB_API_1_Paskaita.Controllers
@@ -14,10 +16,11 @@ namespace WEB_API_1_Paskaita.Controllers
         private readonly IFoodExpiryService _foodExpiryService;
         private readonly IFoodMaper _foodMaper;
 
-        public FoodController( IFoodStoreService foodStoreservice, IFoodExpiryService foodExpiryService, IFoodMaper foodMaper) 
+        public FoodController( IFoodStoreService foodStoreservice, IFoodExpiryService foodExpiryService, IFoodMaper foodMaper, IBusnesService _busnesService) 
         {
             _foodStoreService = foodStoreservice;
             _foodExpiryService = foodExpiryService;
+            _foodMaper = foodMaper;
         }
         [HttpGet("all")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Food>))]

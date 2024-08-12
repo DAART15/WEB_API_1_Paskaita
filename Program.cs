@@ -4,11 +4,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using WEB_API_1_Paskaita.Controllers.Data.Dto;
-using WEB_API_1_Paskaita.DataBase;
 using WEB_API_1_Paskaita.Interfaces;
-using WEB_API_1_Paskaita.Models;
+
 using WEB_API_1_Paskaita.Services;
-using WEB_API_1_Paskaita.Services.Repositories;
+
+using Web_Api.Domain.Extebsions;
+using Web_Api.Infrastructure.Extebsions;
 
 namespace WEB_API_1_Paskaita
 {
@@ -26,12 +27,16 @@ namespace WEB_API_1_Paskaita
                 .AllowAnyMethod()
                 .AllowAnyHeader();
             }));
+            builder.Services.AddCors(p => p.AddPolicy("ProductionCorsPolicy", builder =>
+            {
+                builder.WithOrigins("https://www.google.com")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+            }));
             builder.Services.AddControllers();
 
-            builder.Services.AddDbContext<AplicationDbContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConection"));
-            });
+            
             
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -62,7 +67,7 @@ namespace WEB_API_1_Paskaita
                     },
                     new string[] {}
                 }
-            });
+                });
             });
 
             var jwtSettings = builder.Configuration.GetSection("Jwt");
@@ -93,15 +98,16 @@ namespace WEB_API_1_Paskaita
             builder.Services.AddSingleton<IContactDataService, ContactDataService>();// neberikes kai updatepakursiu jau irepositoryservice, nes i DB viskas sukeliavo
             builder.Services.AddTransient<IContactUpdateService, ContactUpdateService>();
             builder.Services.AddScoped<ISafetyCarService, SafetyCarService>();
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
-            builder.Services.AddScoped<ISafetyCarRepository, SafetyCarRepository>();
+            
+            
             builder.Services.AddScoped<IFoodMaper, FoodMaper>();
-            builder.Services.AddScoped<IContactRepository, ContactRepository>();
+            
             builder.Services.AddScoped<IContactRepositoryService, ContactRepositoryService>();
             builder.Services.AddScoped<IContactMapper, ContactMapper>();
-            builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+            
             builder.Services.AddScoped<IAccountService, AccountService>();
-
+            builder.Services.AddBusnesSevice();
+            builder.Services.AddDatabaseServices(builder.Configuration.GetConnectionString("DefaultConection"));
 
             var app = builder.Build();
 
@@ -110,9 +116,12 @@ namespace WEB_API_1_Paskaita
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseCors("corsfordevelopment");
             }
-
-            app.UseCors("corsfordevelopment");
+            else
+            {
+                app.UseCors("ProductionCorsPolicy");
+            }
 
             app.UseAuthentication();
             app.UseAuthorization();
